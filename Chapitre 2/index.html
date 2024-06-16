@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/white.css" id="theme" />
+    <link rel="stylesheet" href="css/vs2015.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+	<link rel="stylesheet" href="plugin/chalkboard/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<style> .reveal {  font-size: 180%; line-height: 170%; } .reveal p {font-size:80%;} .reveal code {font-size:120%}</style>
+# Chapitre 2. Une première vraie page web
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### On a vu :
+
+- &shy;<!-- .element: class="fragment" data-fragment-index="1" -->les **headings** et **paragraphes**
+	- &shy;<!-- .element: class="fragment" data-fragment-index="2" -->`<h1>...</h1>` et `<p>...</p>` 
+- &shy;<!-- .element: class="fragment" data-fragment-index="3" -->les balises inline
+	- &shy;<!-- .element: class="fragment" data-fragment-index="4" -->`<span>...</span>`  
+- &shy;<!-- .element: class="fragment" data-fragment-index="5" -->les balises englobantes
+	- &shy;<!-- .element: class="fragment" data-fragment-index="6" -->`<header>, <footer>, <main>, <section>, <div>`, `<nav>`
+- &shy;<!-- .element: class="fragment" data-fragment-index="7" -->architecture d'une page ↗ 
+<img src="assets/html-homepage-layout-demo 1.webp" alt="" style="width: 400px; object-fit: fill">
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: style="font-size: 95%; line-height: 95%" class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Autres balises de texte **inline**
+
+| **Élément** | **Signification**  | **But**                                                |
+| ----------- | ------------------ | ------------------------------------------------------ |
+| `<b>`       | Gras               | Mettre en évidence une information importante          |
+| `<strong>`  | Fort               | De manière similaire au gras, pour mettre en avant un texte clé |
+| `<i>`       | Italique           | Pour indiquer du texte                                 |
+| `<em>`      | Texte souligné     | Généralement utilisé pour les légendes d'images        |
+| `<mark>`    | Texte surligné     | Mettre en évidence le fond du texte                    |
+| `<small>`   | Petit texte        | Pour réduire la taille du texte                        |
+| `<strike>`  | Texte barré        | Placer une ligne horizontale à travers le texte        |
+| `<u>`       | Texte souligné     | Utilisé pour les liens ou pour mettre en évidence du texte |
+| `<ins>`     | Texte inséré       | Affiché avec un soulignement pour montrer un texte inséré |
+| `<sub>`     | Texte en indice    | Choix stylistique typographique                        |
+| `<sup>`     | Texte en exposant  | Un autre style de présentation typographique           |
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Exemple
+
+<img src="assets/Pasted image 20240613212536.png" alt="" style="object-fit: scale-down">
+
+
+
+<div class="callout callout-color1">
+<div class="callout-title">
+<div class="callout-icon">
+
+<i class="fas fa-info-circle" ></i>
+
+
+</div>
+<div class="callout-title-inner">
+
+Informations
+
+</div>
+</div>
+<div class="callout-content">
+
+la différence entre bold et strong, italic et emphasised et underline et inserted est uniquement dans la lecture : ex. accessibilité et lecture pour mal voyants
+
+</div>
+</div>
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Listes
+Pour écrire une liste, on utilise `<ul>...</ul>` (*Unordered List*) ou `<ol>...</ol>` (*Ordered List*).
+Ces balises sont de type <mark>block</mark> et rajoute une tabulation 
+<img src="assets/Pasted image 20240613221740.png" alt="" style="object-fit: scale-down">
+
+Pour rajouter un élément, on utilise `<li>...</li>`
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: style="margin: 5px" class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## [Liste Ordonnée](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ol) `<ol>`
+
+<img src="assets/Pasted image 20240613223211.png" alt="" style="object-fit: scale-down">
+
+### l'attribut [type](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ol#type)
+
+#### Définit le type de numérotation :
+
+- `a` pour les lettres minuscules
+- `A` pour les lettres majuscules
+- `i` pour les chiffres romains minuscules
+- `I` pour les chiffres romains majuscules
+- `1` pour les chiffres (par défaut)
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## [Liste sans Ordre](https://developer.mozilla.org/fr/docs/Web/HTML/Element/ul)
+
+<img src="assets/Pasted image 20240613223354.png" alt="" style="object-fit: scale-down">
+
+
+`<ol>` peut lui aussi être imbriqué dans lui même autant que nécessaire 
+<img src="assets/Pasted image 20240613223632.png" alt="" style="width: 500px; object-fit: fill">
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Hyperliens
+pour ouvrir un hyperlien, on utilise la [balise `<a>` (élément d'ancre)](https://developer.mozilla.org/fr/docs/Web/HTML/Element/a) qu'on relie avec l'attribut `href="..."`
+
+<img src="assets/Pasted image 20240613223955.png" alt="" style="object-fit: scale-down">
+
+
+
+<div class="callout callout-color-default">
+<div class="callout-title">
+<div class="callout-icon">
+
+<i class="fas fa-pencil-alt" ></i>
+
+
+</div>
+<div class="callout-title-inner">
+
+Que mettre dans l'attribut `href="..."`
+
+</div>
+</div>
+<div class="callout-content">
+
+On met une url absolue ou relative :
+
+→ **absolue** = lien vers un siteweb `<a href="https://www.google.com/">Google</a>`
+
+→ **relative** = lien vers une page interne, chemin depuis le fichier, vers une autre page
+
+</div>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Insérer des [images `<img>`](https://developer.mozilla.org/fr/docs/Web/HTML/Element/img)
+<mark>l'une des seules balises qui ne nécessite pas de fermeture</mark>, inline
+
+<img src="assets/Pasted image 20240613225243.png" alt="" style="object-fit: scale-down">
+
+
+- `src="..."` : on peut mettre une url absolue (ex. url du logo de wix), ou importer son propre fichier dans notre dossier (ex. `cetacierpng.png`)
+- `alt="..."` : description de l'image (pour malvoyant par exemple)
+- `width` et `height` : si un seul ok mais avec les deux risque d'étirement
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# CSS
+### *Cascading Style Sheets*
+- langage de feuille de style utilisé pour décrire la présentation d'un document écrit en HTML
+- mettre en forme une page web
+
+Plusieurs façons d'écrire en css
+#### interne et externe
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Interne
+c'est à dire du css écrit directement dans l'html avec l'aide de l'attribut `style="..."`
+<img src="assets/Pasted image 20240613231152.png" alt="" style="object-fit: scale-down">
+
+> pratique pour modifier élément par élément **mais** demande de réécrire à chaque fois la même chose.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Externe
+c'est à dire une page css à part : **toujours cette version qui est utilisée**
+- on créé un fichier `style.css`, puis on écrit dans le `<head>` de la page
+```html
+  <link href="style.css" rel="stylesheet" type="text/css" ></link>
+```
+
+<img src="assets/Pasted image 20240616123319.png" alt="" style="object-fit: scale-down">
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Attributs CSS simples
+
+- [`color`](https://developer.mozilla.org/en-US/docs/Web/CSS/color) : couleur du texte
+- [`background-color`](https://developer.mozilla.org/en-US/docs/Web/CSS/background-color) : couleur du fond
+- [`font-size`](https://developer.mozilla.org/en-US/docs/Web/CSS/font-size) : taille du texte
+- [`font-family`](https://developer.mozilla.org/en-US/docs/Web/CSS/font-family) : police d'écriture
+- [`text-align`](https://developer.mozilla.org/en-US/docs/Web/CSS/text-align) : alignement du texte (center, justified, left or right)
+- [`width`](https://developer.mozilla.org/en-US/docs/Web/CSS/width) : largeur de la boite
+- [`height`](https://developer.mozilla.org/en-US/docs/Web/CSS/height) : hauteur de la boite
+- [`margin`](https://developer.mozilla.org/en-US/docs/Web/CSS/margin) : marge **extérieure** (`auto` centrera votre boîte)
+- [`padding`](https://developer.mozilla.org/en-US/docs/Web/CSS/padding) : marge **intérieure**
+- [`border`](https://developer.mozilla.org/en-US/docs/Web/CSS/border) : différents paramètres de la bordure de la boite
+
+> il existe [différentes unités](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units), certaines absolues (`px`, `cm`, `mm`, `in`, `pt`) et d'autres relatives à l'environnement (`em`, `rem`, relatives à la taille du texte du parent, ou de la racine `vh`, `vw` qui sont relatives à la taille de l'écran, `%` relative au parent)
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: style="font-size: 78%" class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## [Sélecteurs CSS](https://www.w3schools.com/cssref/css_selectors.php)
+
+| **Sélecteur**       | **Exemple**  | **Description de l'exemple**                                         |
+| ------------------- | ------------ | -------------------------------------------------------------------- |
+| `*`                 | `*`          | Sélectionne tous les éléments                                        |
+| `element`           | `p`          | Sélectionne tous les éléments `<p>`                                  |
+| `element.class`     | `p.intro`    | Sélectionne tous les éléments `<p>` avec `class="intro"`             |
+| `element,element`   | `div, p`     | Sélectionne tous les éléments `<div>` et tous les éléments `<p>`     |
+| `element element`   | `div p`      | Sélectionne tous les éléments `<p>` à l'intérieur des éléments `<div>` |
+| `element>element`   | `div > p`    | Sélectionne tous les éléments `<p>` dont le parent est un élément `<div>` |
+| `element+element`   | `div + p`    | Sélectionne le premier élément `<p>` qui se trouve immédiatement après un élément `<div>` |
+| `element1~element2` | `p ~ ul`     | Sélectionne chaque élément `<ul>` précédé par un élément `<p>`       |
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Petit exemple de sélecteurs
+
+<img src="assets/Pasted image 20240616130935.png" alt="" style="object-fit: scale-down">
+
+↳ reprend le `style.css` de l'exemple de css externe et ajoute ces 4 sélections
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Exercice
+> En utilisant uniquement les attributs css simples vu précédemment (tous sauf `border` et `font-size` utilisé), reproduisez la page web<sup id="fnref:*" role="doc-noteref">1</sup>suivante ⬎
+
+
+
+
+<div class="footnotes" role="doc-endnotes">
+<ol>
+<li id="fn:*" role="doc-endnote" class="footnote"><p>
+
+regardez la page encore en dessous de l'image pour des consignes supplémentaires  <!-- .element: style="font-size: 60%" -->
+
+</p></li></ol>
+</div>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<img src="assets/Pasted image 20240616150917.png" alt="" style="object-fit: scale-down">
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: style="font-size: 80%" class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+1. utilisez les couleurs que vous voulez, tant que vous trouvez ça beau ;)
+2. pour le menu, créez au moins une autre page html interne pour la lier. Ensuite, vous pouvez lier des pages web avec des url absolue (ex `google.com`)
+3. pour les tailles, il faut que ça ressemble plus ou moins. À titre informatif : 
+<img src="assets/Pasted image 20240616151013.png" alt="" style="width: 500px; object-fit: fill">
+</div></script></section></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+		  RevealChalkboard, 
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+				{ icon: '<i class="fa fa-pen-square"></i>',
+				title: 'Toggle chalkboard (B)',
+				action: 'RevealChalkboard.toggleChalkboard();'
+				},
+				{ icon: '<i class="fa fa-pen"></i>',
+				title: 'Toggle notes canvas (C)',
+				action: 'RevealChalkboard.toggleNotesCanvas();'
+				},
+			]
+		},
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":false,"transition":"slide","transitionSpeed":"normal"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>

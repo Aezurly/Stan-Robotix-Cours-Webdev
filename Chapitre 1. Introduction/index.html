@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/white.css" id="theme" />
+    <link rel="stylesheet" href="css/vs2015.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+	<link rel="stylesheet" href="plugin/chalkboard/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Introduction
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## HTML et CSS
+> **HTML** : Langage de description principal du <mark>contenu</mark> d'une page web
+
+> **CSS** : Langage qui permet de définir la <mark>présentation</mark> du contenu d'un HTML
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Comment une page web fonctionne
+<img src="assets/Pasted image 20240502132359.png" alt="" style="object-fit: scale-down">
+
+
+- **DOM** : Document Objet Model
+- L'HTML est lu de haut de bas pour créer le DOM
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<img src="assets/Pasted image 20240502132413.png" alt="" style="object-fit: scale-down">
+
+- Le CSS lui est lu entièrement avant d'être interprété
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<img src="assets/Pasted image 20240502132653.png" alt="" style="object-fit: scale-down">
+
+- Le **Render Tree** est la combinaison du DOM et du CSSOM. 
+- Il représente ce qui sera affiché à l'écran
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<img src="assets/Pasted image 20240502132756.png" alt="" style="object-fit: scale-down">
+
+- **Layout** : calcule la position et la taille de chaque élément
+- **Paint** : calcule les couches (*layers*) du plus profond vers le plus proche
+	- génère des images à envoyer au GPU
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: style="font-size: 78%" class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+- Ces actions sont, pour un site web, faite par un **Navigateur Web**. 
+
+	→ Plus précisément par un moteur de rendu (*Rendering Engine*).
+- Mais il est aussi possible qu'une application possède son propre moteur de rendu.
+	- Par exemple, Discord, Slack, VSCode etc. sont construit en HTML/CSS et ont un moteur de rendu pour avoir une application
+- il existe aussi évidemment des moteurs pour du javascript
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Chapitre 1. HTML
+On va faire un peu de définitions avant de commencer
+
+> - **H**yper**T**ext : lier différentes ressources à travers des hyperliens
+> - **M**arkup **L**anguage : permet de décrire le contenu d'un document lisible par un logiciel
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: style="font-size: 80%" class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+- L'HTML est donc utilisé pour bâtir le **DOM** (Document Object Model)
+	- il s'agit de la structure logique qui représente le contenu dans le logiciel
+	- ex. *Architecture : le plan du bâtiment (HTML) et le bâtiment physique (DOM)*
+- Composé de plusieurs éléments sous la forme d'un arbre
+	- la racine est toujours `<html>`
+	- Chaque élément a 1 seul parent et 0 à plusieurs enfants
+	- ils sont représenté avec une balise ouvrante `<..>` et une balise fermante `</...>`
+- Les enfants peuvent être : 
+	- d'autres éléments HTML
+	- du texte simple
+	- (du vide)
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: style="font-size: 80%" class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Architecture de base
+
+- `<!DOCTYPE html>` : requis en haut des doc HTML
+	- vestige
+- `<html>` racine qui contient `<head>` et `<body>`
+- `<head>` contient les métadonnées de la pages
+	- titre, encodage, auteur(s), liens vers les ressources externes (CSS, JS, etc.)
+- `<body>` parent de tout le contenu HTML visible de la page
+	- Un seul `<body>` permis par page HTML
+
+> Pour être honnête, vous allez copier/coller la même architecture de base dans tous vos fichiers
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<img src="assets/html-homepage-layout-demo.webp" alt="" style="object-fit: scale-down">
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Dans le `<body>`
+- tout ce qu'on va mettre dans le body va s'afficher
+```html [1-3]
+<body> <!-- Balise Ouvrante -->
+	coucou <!-- s'affiche naturellement -->
+</body> <!-- Balise Fermante -->
+```
+
+<img src="assets/Pasted image 20240502135921.png" alt="" style="object-fit: scale-down">
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: style="font-size: 80%" class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="callout callout-color1">
+<div class="callout-title">
+<div class="callout-icon">
+
+<i class="fas fa-clipboard-list" ></i>
+
+
+</div>
+<div class="callout-title-inner">
+
+Visualiser rapidemment
+
+</div>
+</div>
+<div class="callout-content">
+
+Le mieux est d'habitude d'utiliser VSCode et un local host pour visualiser rapidement son code html, mais pour l'instant on va juste utiliser repl.it
+
+</div>
+</div>
+
+- allez sur https://replit.com/ et créé vous un compte, ensuite créez un projet et sélectionnez HTML, CSS, JS :
+
+<img src="assets/Pasted image 20240502140431.png" alt="" style="object-fit: scale-down">
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: style="font-size: 70%" class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Éléments de base
+## Paragraphe
+<split gap="1">
+<img src="assets/Pasted image 20240502143044.png" alt="" style="object-fit: scale-down">
+
+<img src="assets/Pasted image 20240502143134.png" alt="" style="object-fit: scale-down">
+
+</split>
+
+## Headings
+
+<split even  gap="3">
+<img src="assets/Pasted image 20240502141510.png" alt="" style="object-fit: scale-down">
+
+<img src="assets/Pasted image 20240502141043.png" alt="" style="width: 180px; object-fit: fill">
+
+
+</split>
+
+- On peut aller jusqu'à `<h6>`, mais on dépassera rarement `<h4>` en pratique
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: style="font-size: 70%" class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Exercice
+
+Reproduisez cette page sur https://replit.com/ : 
+
+<img src="assets/Pasted image 20240502143617.png" alt="" style="object-fit: scale-down">
+
+évidemment je m'en fiche du texte exact je veux juste l'architecture ;) <!-- .element: style="font-size: 80%" -->
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: style="font-size: 84%" class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## La réponse :
+
+```html
+<body>
+  <h1>Bienvenue sur cette première page web !</h1>
+  <p>Petit paragraphe d'accueil. Lorem ipsum dolor sit amet,
+    consectetur adipiscing elit, sed do eiusmod tempor
+    incididunt ut labore et dolore magna aliqua. Ut enim ad 
+    minim veniam, quis nostrud exercitation ullamco laboris 
+    nisi ut aliquip ex ea commodo consequat. Duis aute irure
+    dolor in reprehenderit in voluptate velit esse cillum 
+    dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+    cupidatat non proident, sunt in culpa qui officia 
+    deserunt mollit anim id est laborum. </p>
+  <h2>Chapitre 1. HTML</h2>
+  <h3>Première introduction</h3>
+  <p>En cours</p>
+  <h2>Chapitre 2. CSS</h2>
+  <p>à venir</p>
+</body>
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: style="font-size: 60%; margin: 0" class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Autres tags (rares, sauf `<b>` et `<i>`)
+
+| **Element**  | **Meaning**      | **Purpose**                                          |
+| ------------ | ---------------- | ---------------------------------------------------- |
+| `<b>`        | Bold             | Highlight important information                      |
+| `<strong>`   | Strong           | Similarly to bold, to highlight key text             |
+| `<i>`        | Italic           | To denote text                                       |
+| `<em>`       | Emphasised Text  | Usually used as image captions                       |
+| `<mark>`     | Marked Text      | Highlight the background of the text                 |
+| `<small>`    | Small Text       | To shrink the text                                   |
+| `<strike>`   | Striked Out Text | To place a horizontal line across the text           |
+| `<u>`        | Underlined Text  | Used for links or text highlights                    |
+| `<ins>`      | Inserted Text    | Displayed with an underline to show an inserted text |
+| ` <sub>    ` | Subscript Text   | Typographical stylistic choice                       |
+| `<sup>`      | Superscript Text | Another typographical presentation style             |
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<!-- Web Design Course pen_02-05_15.01 -->
+## Architecture en arbre
+
+
+<img src="assets/Pasted image 20240502150917.png" alt="" style="object-fit: scale-down">
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: style="font-size: 70%" class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Affichage en bloc ou en-ligne
+`block` ou `inline`.
+l'affichage `block` signifie que l'élément prend l'entiéreté de la largeur disponible, un élément `inline` lui, ne prend que la largeur minimale.
+
+<img src="assets/Pasted image 20240506122519.png" alt="" style="width: 600px; object-fit: fill">
+
+
+<div class="callout callout-color2">
+<div class="callout-title">
+<div class="callout-icon">
+
+<i class="fas fa-fire-alt" ></i>
+
+
+</div>
+<div class="callout-title-inner">
+
+`span` <!-- .element: style="margin: 0px; padding: 0px" -->
+
+</div>
+</div>
+<div class="callout-content">
+
+`span` est un élément qui ne fait rien techniquement, mais on peut lui appliquer du css, pour par exemple, mettre un "highlight" sur une partie du texte
+
+
+
+</div>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: style="font-size: 75%" class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Balises englobantes
+- `<section>`, `<header>`, `<main>`, `<footer>`, `<div>` 
+	- seules, ces balises ne changent *presque* rien, mais elles servent de "dossiers" dans l'arborescence, et rendent le code plus lisible
+
+```html
+<body>
+<header>
+	<h1>Site Web 1</h1>
+</header>
+<main>
+	<div>
+		<h2>Chapitre 1.</h2>
+		<p>Contenu du cours</p>
+	</div>
+	<p>Transition</p>
+	<div>
+		<h2>Chapitre 2.</h2>
+		<p>Contenu du cours</p>
+	</div>
+</main>
+<footer>
+	<p>Contact : instagram</p>
+</footer>
+</body>
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<img src="assets/Pasted image 20240502160601.png" alt="" style="width: 500px; object-fit: fill">
+
+<img src="assets/Pasted image 20240502160644.png" alt="" style="width: 500px; object-fit: fill">
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<!-- ![[Web Design Course pen_02-05_15.55]] -->
+### Arborescence
+<img src="assets/Pasted image 20240502160508.png" alt="" style="object-fit: scale-down">
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: style="font-size: 85%" class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+Pour les voir, il faut utiliser du css. Ici, je mets juste le fond du `header` en orange, le fond du `main` en bleu, le fond du `footer` en vert et une bordure autour des `div` : 
+<img src="assets/Pasted image 20240502161327.png" alt="" style="object-fit: scale-down">
+</div></script></section><section  data-markdown><script type="text/template">
+
+</script></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+		  RevealChalkboard, 
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+				{ icon: '<i class="fa fa-pen-square"></i>',
+				title: 'Toggle chalkboard (B)',
+				action: 'RevealChalkboard.toggleChalkboard();'
+				},
+				{ icon: '<i class="fa fa-pen"></i>',
+				title: 'Toggle notes canvas (C)',
+				action: 'RevealChalkboard.toggleNotesCanvas();'
+				},
+			]
+		},
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":false,"transition":"slide","transitionSpeed":"normal"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>
