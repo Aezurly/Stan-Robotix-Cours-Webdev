@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/white.css" id="theme" />
+    <link rel="stylesheet" href="css/vs2015.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+	<link rel="stylesheet" href="plugin/chalkboard/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<style> .reveal {  font-size: 180%; line-height: 150%; } .reveal p {font-size:80%; margin:0px;} .reveal code {font-size:120%}</style>
+# Chapitre 4. Display et ses valeurs (menu et flexbox)
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# [Dropdown menu](https://www.w3schools.com/css/css_dropdowns.asp)
+Vous connaissez `display:inline` et `display:block`, mais il existe aussi `none` qui permet de ne pas afficher un objet. Ainsi, on peut utiliser cette attribut pour cacher des parties html, et de les afficher que dans certaines conditions. **Par exemple, lorsqu'on survole (`hover`) un certain bouton.**
+
+<img src="assets/Pasted image 20240620110458.png" alt="" style="object-fit: scale-down">
+
+s'affiche uniquement lorsqu'on survole "Les Compétitions" ↑
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Comment faire ?
+On commence par construire notre premier menu qui sera "affiché tout le temps". Pour plus de clarté dans l'html, on aime utiliser des listes comme ça ↙pour avoir une architecture lisible
+
+<split even >
+<img src="assets/Pasted image 20240620111108.png" alt="" style="width: 500px; object-fit: fill">
+
+<img src="assets/Pasted image 20240620110923.png" alt="" style="object-fit: scale-down">
+
+</split>
+
+
+Aussi, lorsque le css ne charge pas, l'affichage reste lisible ↗
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Ensuite on transforme nos listes
+→ on cache le `<ul>` intérieur avec `display:none`. On enlève l'aspect de liste avec `list-style:none` et l'aspect de lien.
+<img src="assets/Pasted image 20240620111936.png" alt="" style="object-fit: scale-down">
+
+
+À présent, on s'occupe d'avoir un beau menu avec des beaux boutons comme vous l'avez fait dans le dernier cours
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Utilisation de [FLOAT](https://developer.mozilla.org/en-US/docs/Web/CSS/float)
+
+<div class="callout callout-color2">
+<div class="callout-title">
+<div class="callout-icon">
+
+<i class="fas fa-fire-alt" ></i>
+
+
+</div>
+<div class="callout-title-inner">
+
+`float`
+
+</div>
+</div>
+<div class="callout-content">
+
+`float` est une alternative à display inline. Il change la largeur pour qu'elle ne fasse plus 100%, puis place l'élément sur le coté gauche ou droit de son parent conteneur. Le texte et les éléments inline se mettront autour d'eux. La différence avec display inline est que float permet de *rentrer dans un élément `block`*
+
+</div>
+</div>
+<img src="assets/Pasted image 20240620113012.png" alt="" style="width: 600px; object-fit: fill">
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<split even gap="1">
+<img src="assets/Pasted image 20240620113123.png" alt="" style="width: 500px; object-fit: fill">
+
+
+En combinant le parent `float:right` et chacun des petits éléments de listes `float:left`, la boite extérieure nav va être le plus à droite possible, mais les boutons (Accueil, Compétitions, Notre Équipe) seront les uns à la suite des autres. (image 1 et 2). Si on enlève le `float left `de `nav li` par contre on a alors l'image 3
+</split>
+<img src="assets/Pasted image 20240620113330.png" alt="" style="object-fit: scale-down">
+<img src="assets/Pasted image 20240620113405.png" alt="" style="object-fit: scale-down">
+<img src="assets/Pasted image 20240620113504.png" alt="" style="object-fit: scale-down">
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Maintenant, affichons les ul lorsqu'on passe sa souris dessus
+
+lorsqu'on hover `li` ou `li ul`, on veut que `ul li ul` ait un `display:block` pour inverser le `display:none`
+
+<img src="assets/Pasted image 20240620114019.png" alt="" style="object-fit: scale-down">
+
+et lorsqu'on passe sa souris sur un mot...
+<img src="assets/Pasted image 20240620114042.png" alt="" style="object-fit: scale-down">
+
+ça marche !
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Plus qu'à rendre notre `ul` intérieur joli
+- Pour éviter qu'il déplace nos éléments du header, on ne veut plus qu'il interagisse avec le layout de son environnement. Pour ça, on utilise [`position : absolute`](https://developer.mozilla.org/en-US/docs/Web/CSS/position)
+<img src="assets/Pasted image 20240620114529.png" alt="" style="width: 700px; object-fit: fill">
+
+- Ensuite, rajoutons `display:block`, `font-size:90%` (pour rendre les sous menus plus petits) de la marge et du padding et nous avons : 
+<img src="assets/Pasted image 20240620115650.png" alt="" style="width: 700px; object-fit: fill">
+
+Plus qu'à rajouter un fond et un peu de `border-radius` !
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Icones
+Pour utiliser des icones, on doit importer un kit. Le plus simple et courant est d'utiliser https://fontawesome.com/.
+À partir de ce site, vous pouvez customiser et créer des kits. Pour notre cours, on utilisera un kit simple que j'ai fait et qui devrait vous suffire.
+
+Pour l'utiliser, il suffit d'écrire 
+```html
+<script src="https://kit.fontawesome.com/e4ce55f7e2.js" crossorigin="anonymous">__SCRIPT_END__
+```
+dans le `<head>` de notre `html`. Ensuite, on pourra ajouter des icones comme on veut, en cherchant sur le site une icone puis en copiant le code donné
+<img src="assets/Pasted image 20240620130927.png" alt="" style="width: 700px; object-fit: fill">
+
+
+ <mark>Ces icones agissent comme du texte.</mark> On les modifie avec `color`, `font-size`, etc.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Exercice 4.1
+
+reproduisez ce menu :
+
+<img src="assets/Pasted image 20240620131343.png" alt="" style="object-fit: scale-down">
+
+<img src="assets/Pasted image 20240620131421.png" alt="" style="object-fit: scale-down">
+
+→ aidez vous de l'index et de menu.css du [Replit du Cours 4](https://replit.com/@AliceVergeau/StanRobotixCours-4?v=1), puisqu'il ne vous reste plus que rajouter des fonds, un hover effect sur les `li` interne et des marges et paddings.
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# [Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
+absolument aller sur ce site il est génial j'y retourne tout le temps.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Étude de cas
+Je veux créer une petite galerie d'image qui soient centrées et écartées équitablement les unes des autres. 
+Par exemple, comment reproduire ça ?
+
+<img src="assets/Pasted image 20240620121451.png" alt="" style="object-fit: scale-down">
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+Il est possible de le faire avec des marges. Mais imaginons que je veux garder le ratio original de l'image. Comment faire ça ?
+<img src="assets/Pasted image 20240620122539.png" alt="" style="object-fit: scale-down">
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+Il existe une autre valeur que peut prendre `display`. Cette dernière est `flex`. Il s'agit d'un mode de display particulier qui rajoute plein d'attributs css. Ceux si sont détaillés dans [ce guide css](https://css-tricks.com/snippets/css/a-guide-to-flexbox/). On donne à un conteneur la valeur `display:flex` qui permet de plus facilement aligner et distribuer de l'espace parmi ses différents enfants.
+Par exemple, pour faire l'exemple au dessus, on doit d'abord créer notre html tel que 
+```html
+<section class="robots">
+    <h1>Nos Robots 2</h1>
+    <div class="flex">
+      <img src="assets/2017.jpg" height="200px">
+      <img src="assets/2018.png" height="200px">
+      <img src="assets/2019.png" height="200px">
+      <img src="assets/2020.jpg" height="200px">
+      <img src="assets/2022.jpg" height="200px">
+      <img src="assets/2023.jpg" height="200px">
+    </div>
+  </section>
+```
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+Sans css supplémentaire, on obtient alors : 
+<img src="assets/Pasted image 20240620122941.png" alt="" style="width: 700px; object-fit: fill">
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+Si on écrit `display:flex` on obtient alors : 
+<img src="assets/Pasted image 20240620123815.png" alt="" style="object-fit: scale-down">
+
+
+Mais on veut que si les images dépassent de la page, elles passent à la ligne en dessous. On regarde alors notre [guide](https://css-tricks.com/snippets/css/a-guide-to-flexbox/). et on trouve l'attribut `flex-wrap`
+
+<img src="assets/Pasted image 20240620123434.png" alt="" style="width: 400px; object-fit: fill">
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<img src="assets/Pasted image 20240620124012.png" alt="" style="object-fit: scale-down">
+
+Mais on veut que les images soient centrées. Recherchons de nouveau comment faire dans le [guide](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+On veut aussi qu'elles soient espacées.
+<img src="assets/Pasted image 20240620124330.png" alt="" style="object-fit: scale-down">
+
+Ensuite, il ne nous reste plus que rajouter un arrondi aux images
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<img src="assets/Pasted image 20240620124536.png" alt="" style="object-fit: scale-down">
+
+Et voilà !
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Exercice 4.2
+reproduisez ce footer en utilisant des flexbox
+<img src="assets/Pasted image 20240620133951.png" alt="" style="object-fit: scale-down">
+
+<img src="assets/Pasted image 20240620134001.png" alt="" style="object-fit: scale-down">
+
+(souris sur facebook ⬏)
+
+
+>**indice si besoin ⬎**
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+En violet, le contour d'une `div` ayant comme classe `flex`. Ce qui est en pointillé est l'espace créé par la flexbox. En encadré la taille des éléments.
+
+<img src="assets/Pasted image 20240620134121.png" alt="" style="object-fit: scale-down">
+</div></script></section></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+		  RevealChalkboard, 
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+				{ icon: '<i class="fa fa-pen-square"></i>',
+				title: 'Toggle chalkboard (B)',
+				action: 'RevealChalkboard.toggleChalkboard();'
+				},
+				{ icon: '<i class="fa fa-pen"></i>',
+				title: 'Toggle notes canvas (C)',
+				action: 'RevealChalkboard.toggleNotesCanvas();'
+				},
+			]
+		},
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":false,"transition":"slide","transitionSpeed":"normal"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>
