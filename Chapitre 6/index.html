@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/white.css" id="theme" />
+    <link rel="stylesheet" href="css/vs2015.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+	<link rel="stylesheet" href="plugin/chalkboard/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<style> .reveal {  font-size: 180%; line-height: 150%; } .reveal p {font-size:80%; margin:0px;} .reveal code {font-size:120%}</style>
+# Chapitre 5. Github, vscode et Lit
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## VScode
+> éditeur de texte, techniquement comme bloc-notes ou word.
+
+## Git*hub*
+>Git est une plateforme de gestion de version décentralisés = gestion de différentes copies locales pour être regroupée
+>
+>Git**hub** est le site d'hébergement qui permet de voir la version centralisé du projet
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+Exemple, avec replit, je vous ai demandé hier de `fork` (faire une copie local) de mon projet. En gros, git vous permet de fork, mais aussi de `clone`, qui va produire une copie locale (sur votre ordinateur) d'un projet. La différence, c'est que vous pourrez `push` vos modifications sur la version "**commune**" en ligne sur le cloud, visible que github. 
+
+Github est intégré à VSCode ↗
+<img src="assets/Pasted image 20240624171754.png" alt="" style="width: 400px; object-fit: fill">
+
+Sur ce screenshot, git n'est pas "connecté". On peut soit créer une répertoire (projet) git à partir de nos fichiers locaux, soit ouvrir un dossier qui contient un répertoire git, soit cloner depuis le cloud un répertoire.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<split gap="1">
+<img src="assets/Pasted image 20240624172135.png" alt="" style="width: 400px; object-fit: fill">
+
+<img src="assets/Pasted image 20240624172118.png" alt="" style="width: 500px; object-fit: fill">
+
+- ↖ Lorsqu'on est "connecté" à un répertoire, l'onglet "source"
+- Si on modifie un fichier et sauvegarde, on verra le fichier  ↗ modifié apparaître dans le source control
+</split>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<split left="3" right="2">
+
+On peut alors appuyer sur le + pour **`stage changes`**, c'est à dire récupérer ces changements pour les sauvegarder.  ↘
+
+<img src="assets/Pasted image 20240624172608.png" alt="" style="width: 300px; object-fit: fill">
+
+
+
+</split>
+
+Ensuite, on peut **`commit`**, c'est à dire prendre ces changements et les stocker dans une version du répertoire. Il faut lui donner un nom, généralement le noms des modifications effectuées. Ensuite, pour que nos modifications apparaissent sur la version commune (sur le cloud), il faut **`push`** les modifications. Pour éviter les <mark>conflits</mark>, il faut d'abord **`pull`** avant de **`push`**. VSCode vous propose de faire ces deux actions en utilisant le bouton **`sync`**.
+
+> **`merge`** : Si au moyen de partager vos modifications, vous réalisez qu'entre temps quelqu'un d'autre a envoyer les siennes, il faut faire un merge. C'est alors **très important** de vérifier l'ensemble des potentiels conflits et de les régler (choisir quelles versions récupérer pour quel fichier). Pour éviter des merges inutiles, on essaye de pull et push le plus régulièrement possible.
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+Il existe de nombreuses extensions vsCode utile en html/css. Par exemple, une pour vous aider à compléter votre code comme replit, ou encore certaines qui vous permettent de host votre html sur un navigateur et de l'update en direct au fur et à mesure de vos sauvegardes.
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# [Lit](https://lit.dev/docs/getting-started/)
+Librairie html, css, javascript
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+Nous voulons construire un site statique. Mais, il est tout de même embêtant de devoir réécrire et copier les mêmes éléments de pages en pages (exemple, recopier le menu sur chaque page). Pour éviter, on utilise une librairie qui nous permet de construire des composants qu'on peut ensuite importer dans une page html.
+<img src="assets/Pasted image 20240624173700.png" alt="" style="object-fit: scale-down">
+
+→ composant `my-element` importé dans index.html
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+Malheureusement, il faut utiliser du javascript pour se faire. Pas d'inquiétude, vous n'aurez pas à apprendre tout un langage de programmation. Un composant aura toujours cette architecture : 
+<img src="assets/Pasted image 20240624174043.png" alt="" style="object-fit: scale-down">
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Pour pouvoir prévisualiser votre site : 
+Une simple extension ne suffit pas, car il faut d'abord que Lit compile votre javascript pour construire un html et css direct. Pour avoir une simple prévisualisation, il suffit d'écrire dans le terminal, dans votre répertoire : `npm run serve`. Puis, il faudra ouvrir la page `localhost` dans un navigateur.
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Exercice 6.1
+1. sur github, récupérez [ce répertoire](https://github.com/Aezurly/lit-example/tree/main) sur votre compte (`fork`)
+2. puis, [clonez le nouveau répertoire](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) sur votre ordinateur. Connectez votre compte git à votre vscode.
+3. écrivez dans le terminal `npm i` pour installer les dépendances requises, puis `npm i lit` pour installer lit.
+4. téléchargez [ce replit](https://replit.com/@AliceVergeau/StanRobotixCours-6?v=1). Mettez le folder assets (avec les images dedans) dans la root de votre répertoire.
+5. si un fichier css doit être utilisé sur plusieurs pages ou plusieurs composants, alors les importer avec `<link>`, par contre <mark>si du code css est spécifique à un composant, le mettre dans le composant</mark>.
+6. Transformer les .html du replit en différentes pages et composants html. Par exemple, le `root/index.html` contiendra : 
+```html
+	<header-element></header-element>
+	<main>
+		<!-- copier le même main que le index.html du replit -->
+	</main>
+	<footer-element></footer-element>
+```
+Créez les éléments lit nécessaires pour.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+le `dev/index.html` devra d'abord être renommé `robots.html`. Puis, lui aussi va contenir : 
+```html
+	<header-element></header-element>
+	<main>
+		<!-- copier le même main que le robots.html du replit -->
+	</main>
+	<footer-element></footer-element>
+```
+Pensez à ne pas lier de css inutile → par exemple, `index.html` n'a pas besoin du `layout.css` ni de `robots.css`. Le css du footer et header devrait être contenu dans les bonnes parties du fichier javascript de l'élément correspondant.
+</div></script></section></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+		  RevealChalkboard, 
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+				{ icon: '<i class="fa fa-pen-square"></i>',
+				title: 'Toggle chalkboard (B)',
+				action: 'RevealChalkboard.toggleChalkboard();'
+				},
+				{ icon: '<i class="fa fa-pen"></i>',
+				title: 'Toggle notes canvas (C)',
+				action: 'RevealChalkboard.toggleNotesCanvas();'
+				},
+			]
+		},
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":false,"transition":"slide","transitionSpeed":"normal"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>
