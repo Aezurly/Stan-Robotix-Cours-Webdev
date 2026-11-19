@@ -155,7 +155,7 @@ Librairie html, css, javascript
 <div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
 
 Nous voulons construire un site statique. Mais, il est tout de même embêtant de devoir réécrire et copier les mêmes éléments de pages en pages (exemple, recopier le menu sur chaque page). Pour éviter, on utilise une librairie qui nous permet de construire des composants qu'on peut ensuite importer dans une page html.
-```html
+```vue
 <script setup>
 defineProps({
   msg: {
@@ -174,20 +174,20 @@ __SCRIPT_END__
   </div>
 </template>
 
-<style scoped lang="scss">
-	// Inclure ici le css/scss spécifique à ce composant
+<style scoped>
+/* Inclure ici le css spécifique à cette page */
 </style>
 ``````
-→ exemple de composant `Welcome` importé dans home.vue
+→ exemple de composant `Welcome` importé dans nom_de_page.vue
 </div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
 <div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
-Par la suite, dans home.vue:
+Par la suite, dans nom_de_page.vue:
 
-```html
+```vue
 <script setup>
-import BaseHeader from './components/BaseHeader.vue'
-import Welcome from './components/Welcome.vue'
-import BaseFooter from './components/BaseFooter.vue'
+import BaseHeader from '../components/BaseHeader.vue'
+import Welcome from '../components/Welcome.vue'
+import BaseFooter from '../components/BaseFooter.vue'
 __SCRIPT_END__
 
 <template>
@@ -203,8 +203,10 @@ __SCRIPT_END__
 	</footer>
 </template>
 
-<style scoped lang="scss">
-	// Inclure ici le css/scss spécifique à cette page
+<style scoped>
+/* Inclure ici le css spécifique à cette page
+Du scss (css mais un peu plus pratique) peut être utilisé en instalant un
+package en plus et en ajoutant `lang="scss"` dans la balise style */
 </style>
 ``````
 </div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
@@ -218,13 +220,13 @@ Pour les pages `index.html` et `nom_de_page.js` elle seront toutes similaires à
 <html lang="">
   <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/e4ce55f7e2.js" crossorigin="anonymous">__SCRIPT_END__
     <title>Titre de la page</title>
   </head>
   <body>
     <div id="app"></div>
-    <script type="module" src="/src/main.js">__SCRIPT_END__
+    <script type="module" src="/src/nom_de_page/nom_de_page.js">__SCRIPT_END__
   </body>
 </html>
 ```
@@ -235,9 +237,9 @@ Pour les pages `index.html` et `nom_de_page.js` elle seront toutes similaires à
 import './assets/main.css'
 
 import { createApp } from 'vue'
-import Home from './home.vue'
+import nom_de_page from './nom_de_page.vue'
 
-createApp(Home).mount('#app')
+createApp(nom_de_page).mount('#app')
 ``````
 </div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
 <div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
