@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/vs2015.css" />
 	<link rel="stylesheet" href="css/layout.css" />
 	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+	<link rel="stylesheet" href="plugin/chalkboard/style.css">
 
 
 
@@ -173,6 +174,10 @@ On va faire un peu de définitions avant de commencer
 </div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
 <div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
 
+<img src="assets/html-homepage-layout-demo.webp" alt="" style="object-fit: scale-down">
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
 ## Dans le `<body>`
 - tout ce qu'on va mettre dans le body va s'afficher
 ```html [1-3]
@@ -266,6 +271,24 @@ Reproduisez cette page sur https://replit.com/ :
   <p>à venir</p>
 </body>
 ```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: style="font-size: 60%; margin: 0" class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Autres tags (rares, sauf `<b>` et `<i>`)
+
+| **Element**  | **Meaning**      | **Purpose**                                          |
+| ------------ | ---------------- | ---------------------------------------------------- |
+| `<b>`        | Bold             | Highlight important information                      |
+| `<strong>`   | Strong           | Similarly to bold, to highlight key text             |
+| `<i>`        | Italic           | To denote text                                       |
+| `<em>`       | Emphasised Text  | Usually used as image captions                       |
+| `<mark>`     | Marked Text      | Highlight the background of the text                 |
+| `<small>`    | Small Text       | To shrink the text                                   |
+| `<strike>`   | Striked Out Text | To place a horizontal line across the text           |
+| `<u>`        | Underlined Text  | Used for links or text highlights                    |
+| `<ins>`      | Inserted Text    | Displayed with an underline to show an inserted text |
+| ` <sub>    ` | Subscript Text   | Typographical stylistic choice                       |
+| `<sup>`      | Superscript Text | Another typographical presentation style             |
 </div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
 <div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
 
@@ -351,9 +374,7 @@ l'affichage `block` signifie que l'élément prend l'entiéreté de la largeur d
 
 Pour les voir, il faut utiliser du css. Ici, je mets juste le fond du `header` en orange, le fond du `main` en bleu, le fond du `footer` en vert et une bordure autour des `div` : 
 <img src="assets/Pasted image 20240502161327.png" alt="" style="object-fit: scale-down">
-</div></script></section><section  data-markdown><script type="text/template">
-
-</script></section></div>
+</div></script></section></div>
     </div>
 
     <script src="dist/reveal.js"></script>
@@ -367,6 +388,7 @@ Pour les voir, il faut utiliser du css. Ici, je mets juste le fond du `header` e
 	<script src="plugin/chart/chart.min.js"></script>
 	<script src="plugin/chart/plugin.js"></script>
 	<script src="plugin/customcontrols/plugin.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
 
     <script>
       function extend() {
@@ -422,6 +444,7 @@ Pour les voir, il faut utiliser du css. Ici, je mets juste le fond du `header` e
 		  RevealMermaid,
 		  RevealChart,
 		  RevealCustomControls,
+		  RevealChalkboard, 
         ],
 
 
@@ -444,6 +467,19 @@ Pour les voir, il faut utiliser du css. Ici, je mets juste le fond du `header` e
 
 		customcontrols: {
 			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+				{ icon: '<i class="fa fa-pen-square"></i>',
+				title: 'Toggle chalkboard (B)',
+				action: 'RevealChalkboard.toggleChalkboard();'
+				},
+				{ icon: '<i class="fa fa-pen"></i>',
+				title: 'Toggle notes canvas (C)',
+				action: 'RevealChalkboard.toggleNotesCanvas();'
+				},
 			]
 		},
       };
@@ -451,7 +487,7 @@ Pour les voir, il faut utiliser du css. Ici, je mets juste le fond du `header` e
       // options from URL query string
       var queryOptions = Reveal().getQueryHash() || {};
 
-      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":false,"transition":"slide","transitionSpeed":"default"}, queryOptions);
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":false,"transition":"slide","transitionSpeed":"normal"}, queryOptions);
     </script>
 
     <script>
