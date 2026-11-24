@@ -250,32 +250,45 @@ Une simple extension ne suffit pas, car il faut d'abord que Vue compile votre ja
 <div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
 
 # Exercice 6.1
-1. sur github, récupérez [ce répertoire](https://github.com/Aezurly/lit-example/tree/main) sur votre compte (`fork`)
+1. sur github, récupérez [ce répertoire](https://github.com/Starelie/vue-example/tree/main/) sur votre compte (`fork`).
 2. puis, [clonez le nouveau répertoire](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) sur votre ordinateur. Connectez votre compte git à votre vscode.
-3. écrivez dans le terminal `npm i` pour installer les dépendances requises, puis `npm i lit` pour installer lit.
+3. écrivez dans le terminal `npm i` pour installer les dépendances requises.
 4. téléchargez [ce replit](https://replit.com/@AliceVergeau/StanRobotixCours-6?v=1). Mettez le folder assets (avec les images dedans) dans la root de votre répertoire.
 5. si un fichier css doit être utilisé sur plusieurs pages ou plusieurs composants, alors les importer avec `<link>`, par contre <mark>si du code css est spécifique à un composant, le mettre dans le composant</mark>.
-6. Transformer les .html du replit en différentes pages et composants html. Par exemple, le `root/index.html` contiendra : 
-```html
-	<header-element></header-element>
-	<main>
-		<!-- copier le même main que le index.html du replit -->
-	</main>
-	<footer-element></footer-element>
-```
-Créez les éléments lit nécessaires pour.
+6. Transformer les .html du replit en différentes pages et composants Vue.
+7. Créez les composants nécéssaires en prenant en exemple le `BaseFooter.vue`.
 </div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
 <div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
 
-le `dev/index.html` devra d'abord être renommé `robots.html`. Puis, lui aussi va contenir : 
-```html
-	<header-element></header-element>
+Par exemple, le `src/home/Home-Page.vue` contiendra :
+
+```vue
+<script setup>
+import BaseHeader from '../components/BaseHeader.vue'
+import BaseFooter from '../components/BaseFooter.vue'
+__SCRIPT_END__
+
+<template>
+	<BaseHeader />
 	<main>
-		<!-- copier le même main que le robots.html du replit -->
+		<!-- copier le même main que le index.html du replit -->
 	</main>
-	<footer-element></footer-element>
-```
-Pensez à ne pas lier de css inutile → par exemple, `index.html` n'a pas besoin du `layout.css` ni de `robots.css`. Le css du footer et header devrait être contenu dans les bonnes parties du fichier javascript de l'élément correspondant.
+	<BaseFooter />
+</template>
+
+<style>
+/* copier le css qui impacte le html du index.html */
+</style>
+``````
+
+Vous devrez créé un fichier `grid.html` qui chargera un `grid.js` qui à son tour peuplera la page web à partir du `Grid-Page.vue`
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Pour aller plus loin :
+- Vous pouvez créer des composants pour séparer le contenu de la page home en plusieurs parties qui sont plus facilement modifiables
+- Vous pouvez créer un composant pour la description d'un robot (Regardez le `Welcome.vue` pour voir comment créer des composants avec des sections variables)
+- Vous pouvez ajouter une variable qui sélection le coté où l'image est affichée
 </div></script></section></section></div>
     </div>
 
