@@ -159,19 +159,18 @@ Nous voulons construire un site statique. Mais, il est tout de même embêtant d
 ```vue
 <script setup>
 defineProps({
-  msg: {
+  color: {
     type: String,
-    required: true,
+    required: false,
+    default: "green",
   },
 })
 __SCRIPT_END__
 
 <template>
   <div class="greetings">
-    <h1 class="green">Bienvenue</h1>
-    <h3>
-      {{ msg }}
-    </h3>
+    <h1 :class="color">Bienvenue</h1>
+    <h3><slot name="text"></slot></h3>
   </div>
 </template>
 
@@ -192,16 +191,16 @@ import BaseFooter from '../components/BaseFooter.vue'
 __SCRIPT_END__
 
 <template>
-  <header>
-		<BaseHeader />
-  </header>
+  <BaseHeader />
   <main>
-		<h1>Ceci est la page principale de mon site web</h1>
-    <Welcome msg="Bravo! Tu as créé une page"/>
+    <h1>Ceci est la page principale de mon site web</h1>
+    <Welcome>
+      <template v-slot:text>
+        Bravo! Tu as créé une page!
+      </template>
+    </Welcome>
   </main>
-	<footer>
-		<BaseFooter />
-	</footer>
+  <BaseFooter />
 </template>
 
 <style scoped>
